@@ -13,6 +13,32 @@
 
 ---
 
+## 快速开始
+
+```bash
+git clone https://github.com/6June6/bidding-law-library.git
+cd bidding-law-library
+open index.html          # macOS；Linux 用 xdg-open，Windows 直接双击
+```
+
+只想拿检索页、不想克隆整个仓库？下载这一个文件就够了——**7.4 MB，内含 414 篇全文与完整索引，
+断网可用**：[index.html](https://github.com/6June6/bidding-law-library/raw/main/index.html)
+
+按需取用：
+
+| 我想要 | 用什么 |
+| --- | --- |
+| 全文检索、条文定位、按地区/层级/机关筛选 | `index.html`（浏览器打开） |
+| 在 Excel 里排序、筛选、做清单 | `catalog.csv` |
+| 按层级/地区/机关浏览目录 | `INDEX.md` |
+| 让 AI / 笔记软件读的纯文本 | `0*/*.md`（414 篇，带 YAML 元数据） |
+| 自己更新数据、抓新法规 | `tools/refresh.py` |
+
+> 检索框里输**关键词**，别输问句：`投标保证金`、`串通投标 认定`、`第36条 否决投标`。
+> 多个词用空格分隔（AND），`-词` 排除，`"完整短语"` 精确匹配。
+
+---
+
 ## 1. 资料范围
 
 | 层级 | 制定主体 | 效力位阶 | 件数 | 目录 |
