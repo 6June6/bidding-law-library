@@ -374,28 +374,42 @@ node tools/test_search.js                  # 检索回归测试（25 项断言�
 **开箱即用的在线版**：<https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ>
 （单页应用，手机浏览器直接可用，无需安装）
 
-**部署到自己的服务器**同样是拷一个文件的事——`index.html` 是自包含的，不依赖任何后端：
-
-```nginx
-# 把 index.html 放到 /srv/law/，然后加一段 location
-location /law/ {
-    alias /srv/law/;
-    index index.html;
-    gzip on;
-    gzip_types text/html;
-    gzip_min_length 1k;      # 7.4MB → 约 1.3MB，手机上也快
-}
-```
+**部署到自己的服务器**同样是拷一个文件的事——`index.html` 是自包含的，不依赖任何后端。
+仓库里备了一键脚本 `tools/deploy-law-site.sh`，在服务器上以 root 执行：
 
 ```bash
-scp index.html root@你的服务器:/srv/law/
-nginx -t && systemctl reload nginx
-# 访问 http://你的服务器IP/law/
+bash deploy-law-site.sh          # 默认从 GitHub raw 拉取，失败回退到托管地址
+# 或指定来源： bash deploy-law-site.sh /tmp/index.html
 ```
 
-放在子路径而不是根路径，不会影响同一台机器上的其他站点。若走 https，`gzip` 与
-`Cache-Control: max-age=86400` 都建议加在 location 里——文件内容随数据更新变化，
-不宜设 immutable。
+脚本做的事：下载并校验文件 → 生成 `/etc/nginx/law-snippets/law.conf` →
+**找到真正 `listen 80` 的那个 server 块**并插入一行 `include`（不会插到 443 块上）→
+`nginx -t` 不通过自动回滚 → reload 并自检 `/law/` 与本机首页。
+
+它只插一行 include，不动任何既有 location；幂等，重复跑不会重复插入。
+
+**SSH 连不上时先分清是哪一层的问题**（这次踩过）：
+
+```bash
+ping -c2 你的服务器IP                      # 通 → 主机在线
+curl -o /dev/null -w '%{http_code}\n' http://你的服务器IP/   # 200 → 80 正常
+nc -z -G 5 你的服务器IP 22                  # 超时 → 22 被挡
+```
+
+若 22 超时、80 正常，用第三方节点做对照（本机 IP 被封还是端口全局未开）：
+
+```bash
+curl -s -H "Accept: application/json" \
+  "https://check-host.net/check-tcp?host=你的服务器IP:22&max_nodes=4"
+# 拿 request_id 再查结果
+```
+
+- **全球节点全超时** → 云防火墙/安全组没放行 22，去控制台加规则（TCP:22，
+  来源填当前公网 IP；家庭宽带是动态 IP，换网后要重加）
+- **只有部分节点超时** → 服务器侧把该 IP 封了（云镜/fail2ban），走控制台 VNC 解封
+
+腾讯云「云助手」可以在**不开 SSH** 的情况下以 root 执行脚本，安全组没放行 22 时
+这是最快的通路：控制台 → 实例 → 云助手 → 发送命令 → 粘贴上面的 `bash` 命令。
 
 ## 13. 数据质量守则（踩过的坑）
 
