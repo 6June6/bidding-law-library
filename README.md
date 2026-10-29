@@ -29,7 +29,7 @@ open index.html          # macOS；Linux 用 xdg-open，Windows 直接双击
 | 我想要 | 用什么 |
 | --- | --- |
 | 全文检索、条文定位、按地区/层级/机关筛选 | `index.html`（浏览器打开） |
-| 手机/他人也能搜，不装任何东西 | [在线版](https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ) |
+| 手机/他人也能搜，不装任何东西 | [在线版](https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ) 或 [自建版](http://43.142.60.131/law/) |
 | 让 AI（Claude / Cursor / WorkBuddy）直接查这个库 | `tools/mcp_server.py`（[MCP 服务](#11-接入-ai用-mcp-让模型直接查库)） |
 | 在 Excel 里排序、筛选、做清单 | `catalog.csv` |
 | 按层级/地区/机关浏览目录 | `INDEX.md` |
@@ -374,19 +374,29 @@ node tools/test_search.js                  # 检索回归测试（25 项断言�
 **开箱即用的在线版**：<https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ>
 （单页应用，手机浏览器直接可用，无需安装）
 
-**部署到自己的服务器**同样是拷一个文件的事——`index.html` 是自包含的，不依赖任何后端。
-仓库里备了一键脚本 `tools/deploy-law-site.sh`，在服务器上以 root 执行：
+**自建部署（已上线）**：<http://43.142.60.131/law/>
+挂在导航站同一台 nginx 的 `/law/` 子路径下，不占额外进程、不影响原站点。
+`gzip_static` 预压缩后 **1.8 MB / 约 2.2 秒**（未压缩是 7.8 MB / 10 秒）。
+
+**`index.html` 是自包含的**，不依赖任何后端。数据更新后本地一条命令即可同步：
 
 ```bash
-bash deploy-law-site.sh          # 默认从 GitHub raw 拉取，失败回退到托管地址
-# 或指定来源： bash deploy-law-site.sh /tmp/index.html
+python3 tools/render.py          # 重新生成 index.html
+bash tools/push-to-server.sh     # 上传 + 部署 + 自检（默认 SSH Host = nav）
 ```
 
-脚本做的事：下载并校验文件 → 生成 `/etc/nginx/law-snippets/law.conf` →
-**找到真正 `listen 80` 的那个 server 块**并插入一行 `include`（不会插到 443 块上）→
-`nginx -t` 不通过自动回滚 → reload 并自检 `/law/` 与本机首页。
+服务器侧的执行者是 `tools/deploy-law-site.sh`（也可单独在服务器上以 root 跑，
+参数给 `/tmp/index.html` 或某个 URL）：
 
-它只插一行 include，不动任何既有 location；幂等，重复跑不会重复插入。
+```bash
+bash deploy-law-site.sh /tmp/index.html
+```
+
+脚本做的事：校验文件完整 → 预压缩 `.gz` → 生成 `/etc/nginx/law-snippets/law.conf`
+（`gzip_static` + 1 小时缓存 + `/law` 301）→ **找到真正 `listen 80` 的那个 server 块**
+并插入一行 `include`（不会插到 443 块上）→ `nginx -t` 不通过自动从 `.bak-时间戳` 回滚 →
+reload 后自检 `/law/` 内容与本机首页状态码。它只插一行 include，不动任何既有 location；
+幂等，重复跑不会重复插入。
 
 **SSH 连不上时先分清是哪一层的问题**（这次踩过）：
 

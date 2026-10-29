@@ -41,6 +41,10 @@ log "文件大小：$((SIZE/1024/1024)) MB"
 [ "$SIZE" -gt 5000000 ] || die "文件过小（${SIZE} 字节），下载不完整"
 grep -q 'id="blob"' "$TARGET" || die "内容不像检索页（缺少 blob 脚本），拒绝部署"
 
+# 预压缩一份：2 核机器上不建议每次现压 7.8MB，gzip_static 直接发这个文件
+gzip -9 -c "$TARGET" > "$TARGET.gz"
+log "预压缩：$(( $(stat -c%s "$TARGET.gz") / 1024 )) KB（原 $((SIZE/1024/1024)) MB）"
+
 # ---------- 2) 定位 nginx ----------
 NGINX_BIN=$(command -v nginx || echo /usr/sbin/nginx)
 [ -x "$NGINX_BIN" ] || die "未找到 nginx"
@@ -53,9 +57,9 @@ location = /law { return 301 /law/; }
 location /law/ {
     alias /srv/law/;
     index index.html;
+    # 预压缩文件直接发，不必每次现压 7.8MB（2 核机器上有实际收益）
+    gzip_static on;
     gzip on;
-    gzip_types text/html;
-    gzip_min_length 1024;
     add_header Cache-Control "public, max-age=3600";
 }
 NGX
@@ -149,8 +153,23 @@ sleep 1
 
 CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 http://127.0.0.1/law/ || echo 000)
 log "本机自检 http://127.0.0.1/law/ → HTTP $CODE"
-curl -s --max-time 10 http://127.0.0.1/law/ | head -c 300 | grep -qi '<title>' \
-  && log "标题已返回，部署成功" || log "警告：返回内容异常，请检查 alias 路径与 selinux"
+
+# 注意：不要写成 `curl ... | head -c 300 | grep -q`。set -o pipefail 下 head 提前关闭
+# 管道会让 curl 收到 SIGPIPE 返回非零，整条管道假失败——曾因此误报「内容异常」。
+# 先落文件再检查，判据才可靠。
+SELF=/tmp/law-self-check.html
+if curl -s --max-time 15 -o "$SELF" http://127.0.0.1/law/ && grep -qi '<title>' "$SELF"; then
+  GOT=$(( $(stat -c%s "$SELF") / 1024 / 1024 ))
+  log "内容校验通过（${GOT} MB，标题正常）"
+  rm -f "$SELF"
+else
+  log "警告：返回内容异常，请检查 alias 路径与 selinux"
+fi
+
+# 校验预压缩是否真的生效
+CE=$(curl -s -o /dev/null -D - -H 'Accept-Encoding: gzip' --max-time 10 \
+       http://127.0.0.1/law/ | grep -ic 'content-encoding: gzip' || true)
+[ "$CE" -ge 1 ] && log "gzip 生效（预压缩文件已命中）" || log "提示：gzip 未生效，检查 gzip_static 模块"
 
 NAV=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 http://127.0.0.1/ || echo 000)
 log "导航站自检 http://127.0.0.1/ → HTTP $NAV（200 表示未受影响）"
