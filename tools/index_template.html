@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>招标投标法律法规资料库</title>
+<style>
+:root{--bg:#0f1115;--bg2:#161a21;--bg3:#1d222b;--line:#2a3140;--tx:#e6e9ef;
+--tx2:#a3adbd;--tx3:#6f7a8c;--ac:#5b9dff;--ac2:#2f6fd0;--ok:#4ec9a5;--warn:#e0b25a;--hi:#ffd98a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+header{padding:20px 28px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#151a23,#0f1115)}
+h1{margin:0 0 10px;font-size:20px;letter-spacing:.5px}
+.sub{color:var(--tx2);font-size:12.5px}
+.searchbar{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
+input[type=text]{flex:1;min-width:280px;padding:11px 14px;border-radius:9px;border:1px solid var(--line);
+background:var(--bg2);color:var(--tx);font-size:14px;outline:none}
+input[type=text]:focus{border-color:var(--ac2);box-shadow:0 0 0 3px rgba(91,157,255,.12)}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{padding:9px 13px;background:var(--bg2);border:0;border-right:1px solid var(--line);
+color:var(--tx2);font-size:13px;cursor:pointer;white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button.on{background:#1c2940;color:#cfe0ff}
+.hint{font-size:12px;color:var(--tx3);margin-top:8px;line-height:1.6}
+.hint code{background:var(--bg3);padding:1px 6px;border-radius:4px;color:var(--tx2);font-size:11.5px}
+.wrap{display:flex;min-height:calc(100vh - 150px)}
+aside{width:252px;flex:0 0 252px;border-right:1px solid var(--line);padding:14px 12px 40px;
+background:var(--bg2);overflow:auto;max-height:calc(100vh - 150px)}
+aside h3{margin:16px 0 7px;font-size:11.5px;color:var(--tx3);font-weight:600;letter-spacing:1px;
+display:flex;align-items:center;cursor:pointer;user-select:none}
+aside h3:first-child{margin-top:0}
+aside h3 .caret{display:inline-block;width:12px;color:var(--tx3);font-size:9px}
+.grp{display:block}
+.grp.hide{display:none}
+.f{display:block;width:100%;text-align:left;padding:6px 10px;margin-bottom:3px;border-radius:7px;
+background:transparent;border:1px solid transparent;color:var(--tx2);font-size:13px;cursor:pointer;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f:hover{background:var(--bg3);color:var(--tx)}
+.f.on{background:#1c2940;border-color:#2f4a75;color:#cfe0ff}
+.f.zero{opacity:.35}
+.f .n{float:right;color:var(--tx3);font-size:11.5px;margin-left:6px}
+.subf{width:100%;padding:5px 9px;margin-bottom:6px;border-radius:6px;border:1px solid var(--line);
+background:var(--bg3);color:var(--tx);font-size:12px;outline:none}
+.scrollbox{max-height:260px;overflow:auto;margin:-2px -4px 0;padding:0 4px}
+main{flex:1;display:flex;min-width:0}
+.list{width:44%;min-width:330px;border-right:1px solid var(--line);overflow:auto;max-height:calc(100vh - 150px)}
+.listbar{padding:9px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2;
+display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tx3);flex-wrap:wrap}
+.listbar .s{padding:3px 9px;border-radius:20px;border:1px solid var(--line);background:transparent;
+color:var(--tx2);font-size:12px;cursor:pointer}
+.listbar .s.on{background:#1c2940;border-color:#2f4a75;color:#cfe0ff}
+.cnt{margin-left:auto;color:var(--tx3)}
+.item{padding:11px 16px;border-bottom:1px solid #1e242e;cursor:pointer}
+.item:hover{background:var(--bg2)}
+.item.on{background:#17202e;box-shadow:inset 3px 0 0 var(--ac)}
+.t{font-size:14.5px;color:var(--tx);margin-bottom:5px;line-height:1.5}
+.m{font-size:11.5px;color:var(--tx3);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{font-size:11px;padding:1px 7px;border-radius:20px;border:1px solid #33405a;color:#9fb4d8}
+.tag.lv{background:#1b2434}
+.tag.rg{background:#231f2e;border-color:#3d3550;color:#c3b0e0}
+.snips{margin-top:7px;border-left:2px solid #2a3140;padding-left:9px}
+.snip{font-size:12.5px;color:var(--tx2);line-height:1.65;margin-bottom:3px;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.snip b{color:var(--ac);font-weight:600;margin-right:5px}
+.snip em{font-style:normal;color:var(--tx3)}
+.doc{flex:1;overflow:auto;padding:24px 32px 60px;max-height:calc(100vh - 150px);min-width:0}
+.doc h2{margin:0 0 4px;font-size:19px;line-height:1.4}
+.meta{font-size:12.5px;color:var(--tx2);margin:12px 0 18px;padding:12px 14px;background:var(--bg2);
+border:1px solid var(--line);border-radius:9px}
+.meta div{margin:3px 0}
+.meta b{color:var(--tx3);font-weight:500;display:inline-block;min-width:70px}
+.docbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;color:var(--tx3)}
+.docbar button{padding:3px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg2);
+color:var(--tx2);cursor:pointer;font-size:12px}
+.body{font-size:14.5px;line-height:1.95;color:#d7dce6}
+.u{margin:0 0 9px;white-space:pre-wrap}
+.u.art{padding-left:0}
+.u.head{font-size:15.5px;color:#fff;font-weight:600;margin:18px 0 8px;white-space:normal}
+.u.sec{color:#c9d2e0;font-weight:600;margin:14px 0 6px}
+.u.flash{background:#2a2410;box-shadow:-6px 0 0 #4a3a12;border-radius:3px}
+.empty{color:var(--tx3);padding:40px 0;text-align:center;font-size:13px}
+a{color:var(--ac);text-decoration:none}
+a:hover{text-decoration:underline}
+mark{background:#4a3a12;color:var(--hi);border-radius:2px;padding:0 1px}
+mark.cur{background:#7a5a12;color:#fff}
+.sepg{padding:7px 16px;font-size:11.5px;color:var(--tx3);background:#131720;
+border-top:1px solid var(--line);border-bottom:1px solid var(--line);letter-spacing:.5px}
+.more{padding:12px;text-align:center;font-size:12px;color:var(--tx3);cursor:pointer}
+.more:hover{color:var(--ac)}
+@media(max-width:1180px){.list{width:46%}}
+@media(max-width:900px){aside{display:none}.list{width:100%}.doc{display:none}
+body.mob-doc .list{display:none}body.mob-doc .doc{display:block;width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <h1>招标投标法律法规资料库</h1>
+  <div class="sub">__COUNT__ 件 · 全文 __FULL__ 件 · __CHARS__ 万字 · __ARTS__ 条 · 索引 __DATE__</div>
+  <div class="searchbar">
+    <input type="text" id="q" placeholder="搜名称、文号、机关，或正文关键词（如 投标保证金、评标委员会）" autocomplete="off" spellcheck="false">
+    <div class="seg" id="scope">
+      <button data-v="all" class="on">全文</button><button data-v="title">仅标题</button>
+    </div>
+    <div class="seg" id="sort">
+      <button data-v="rel" class="on">相关度</button><button data-v="level">层级</button><button data-v="date">日期</button>
+    </div>
+  </div>
+  <div class="hint">空格分隔＝同时包含；<code>"串通投标"</code> 精确短语；<code>-政府采购</code> 排除；
+  同义词自动扩展（串标／围标／串通投标）；<code>第36条</code> 或 <code>第三十六条</code> 直达条文；
+  <code>↑↓</code> 翻条　<code>Esc</code> 清空</div>
+</header>
+<div class="wrap">
+  <aside id="side"></aside>
+  <main>
+    <div class="list" id="listWrap">
+      <div class="listbar">
+        <button class="s on" data-f="level">效力层级</button>
+        <span class="cnt" id="cnt"></span>
+      </div>
+      <div id="items"></div>
+    </div>
+    <div class="doc" id="doc"><div class="empty">← 选择左侧条目查看内容</div></div>
+  </main>
+</div>
+
+<script id="idx" type="application/json">__INDEX__</script>
+<script id="blob" type="text/plain">__BLOB__</script>
+<script>
+const IDX=JSON.parse(document.getElementById('idx').textContent.replace(/\u0000SCRIPT\u0000/g,'<\/script'));
+const BLOB=document.getElementById('blob').textContent.split('\u0000SCRIPT\u0000').join('<\/script');
+const DOCS=IDX.docs, UNITS=IDX.units, ARTS=IDX.arts, N=DOCS.length;
+const LEVELS=["法律","行政法规","部门规章","地方性法规","规范性文件","司法解释"];
+const LVW={"法律":1.26,"行政法规":1.18,"司法解释":1.15,"部门规章":1.10,"地方性法规":1.04,"规范性文件":1.0};
+const LVDESC={"法律":"全国人大及其常委会制定，效力仅次于宪法","行政法规":"国务院制定，效力低于法律、高于地方性法规和规章","部门规章":"国务院部门制定，效力低于行政法规","地方性法规":"省级及设区的市人大制定，本行政区域内有效","规范性文件":"非立法性文件，不得与法律法规规章抵触","司法解释":"最高法对法律适用的解释，具有普遍约束力"};
+
+/* ---------- 查询解析 ---------- */
+const RE_ARTQ=/第\s*([一二三四五六七八九十百零〇两\d]+)\s*条/g;
+function parseQuery(raw){
+  const g={must:[],not:[],phrase:[],art:null};
+  let s=(raw||'').trim();
+  const m=RE_ARTQ.exec(s); RE_ARTQ.lastIndex=0;
+  if(m)g.art=m[1];
+  s=s.replace(/"([^"]+)"/g,(x,p)=>{g.phrase.push(p.trim());return ' '});
+  s=s.replace(/[《》]/g,' ');
+  s.split(/[\s,，、;；]+/).forEach(w=>{
+    if(!w)return;
+    if(w[0]==='-'&&w.length>1)g.not.push(w.slice(1));
+    else if(w!==(g.art?'第'+g.art+'条':''))g.must.push(w);
+  });
+  return g;
+}
+/* 同义扩展：每个必含词得到一组等价写法 */
+function _expand(w){
+  const out=[w];
+  for(const grp of IDX.syn){
+    // 只认「完全相等」或「查询词是术语的前缀且>=3字」——否则「保证金」会顺着
+    // 「投标保证金」这组词被扩成任意保证金文件，召回变噪声
+    if(grp.some(x=>x===w||(w.length>=3&&x.startsWith(w)))){
+      for(const x of grp)if(!out.includes(x))out.push(x);
+      break;
+    }
+  }
+  const low=w.toLowerCase();
+  if(low!==w&&!out.includes(low))out.push(low);
+  return out;
+}
+const _expMemo=new Map();
+function expand(w){
+  if(_expMemo.has(w))return _expMemo.get(w);
+  const out=_expand(w);_expMemo.set(w,out);return out;
+}
+const CNMAP={零:0,〇:0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
+function cn2n(s){
+  if(/^\d+$/.test(s))return +s;
+  let tot=0,sec=0,cur=0;
+  for(const ch of s){
+    if(ch==='十'){sec+=(cur||1)*10;cur=0}
+    else if(ch==='百'){sec+=(cur||1)*100;cur=0}
+    else if(ch in CNMAP)cur=CNMAP[ch]; else return null;
+  }
+  return tot+sec+cur;
+}
+
+/* ---------- 全文扫描：一次 indexOf 扫完整个 blob ---------- */
+function docAt(pos){
+  let lo=0,hi=N-1;
+  while(lo<hi){const mid=(lo+hi+1)>>1; if(DOCS[mid].s<=pos)lo=mid; else hi=mid-1}
+  return lo;
+}
+function scanWord(w){
+  // 返回 Map<docIdx, {n:次数, p:[前若干个位置]}>
+  const res=new Map(); let p=BLOB.indexOf(w);
+  const L=w.length||1;
+  while(p!==-1){
+    const d=docAt(p);
+    let r=res.get(d);
+    if(!r)res.set(d,r={n:0,p:[]});
+    r.n++; if(r.p.length<6)r.p.push(p);
+    p=BLOB.indexOf(w,p+L);
+  }
+  return res;
+}
+
+/* ---------- 状态 ---------- */
+let kw='', scope='all', sortBy='rel', art=null;
+const F={level:'全部',region:'全部',tag:'全部',issuer:'全部'};
+let RESULT=[], SHOWN=80, sel=-1, curDoc=-1, hitPos=[];
+
+/* ---------- 检索 ---------- */
+let cache=new Map();
+function doSearch(){
+  const g=parseQuery(kw);
+  art=g.art?cn2n(g.art):null;
+  const key=kw+'|'+scope+'|'+F.level+'|'+F.region+'|'+F.tag+'|'+F.issuer;
+  if(cache.has(key)){RESULT=cache.get(key);return}
+  const needTerms=g.must.length||g.phrase.length||art!==null;
+  const scores=new Array(N).fill(0);
+  const hits=new Array(N).fill(null);
+  const perDoc=new Array(N).fill(null);
+  const mustHit=new Array(N).fill(0);
+  let strict=0;                       // 参与淘汰的必含词数（剔除泛词后）
+
+  // 1) 字段命中（标题/别名/文号/机关/标签）——不扫全文，直接字符串匹配
+  const allTerms=g.must.concat(g.phrase);
+  if(allTerms.length){
+    for(let i=0;i<N;i++){
+      const d=DOCS[i];
+      if(!passFilter(d))continue;
+      let sc=0, ok=0, h=[];
+      const hay=(d.t+' '+d.dn+' '+d.is+' '+d.tg.join(' ')+' '+d.al.join(' ')+' '+d.nt);
+      for(const w of allTerms){
+        const alts=expand(w);
+        let got=false;
+        // 标题命中分级：完全等于 > 以查询词开头 > 仅包含。
+        // 否则搜「政府采购法」时《政府采购法实施条例》会压过《政府采购法》本身。
+        const simp=d.t.replace(/^中华人民共和国/,'').replace(/[《》]/g,'');
+        if(alts.some(a=>simp===a)){sc+=26;got=true}
+        else if(alts.some(a=>d.al.some(x=>x===a))){sc+=23;got=true}   // 去掉地区前缀后同名
+        else if(alts.some(a=>simp.startsWith(a))){sc+=17;got=true}
+        else if(alts.some(a=>d.al.some(x=>x.startsWith(a)))){sc+=14;got=true}
+        else if(alts.some(a=>d.t.includes(a))){sc+=9;got=true}
+        else if(alts.some(a=>d.al.some(x=>x.includes(a)))){sc+=6;got=true}
+        else if(alts.some(a=>d.dn&&d.dn.includes(a))){sc+=6;got=true}
+        else if(alts.some(a=>d.cat&&a===d.cat)){sc+=5;got=true}
+        else if(alts.some(a=>d.tg.some(x=>x===a||x.includes(a)))){sc+=4;got=true}
+        else if(alts.some(a=>d.is.includes(a))){sc+=4;got=true}
+        else if(alts.some(a=>d.nt&&d.nt.includes(a))){sc+=2;got=true}
+        if(g.must.includes(w)&&got)ok++;
+        if(got&&scope!=='title')h.push(w);
+      }
+      if(g.must.length&&ok<g.must.length&&scope==='title')continue;
+      if(sc>0){scores[i]+=sc;perDoc[i]=perDoc[i]||{n:0};perDoc[i].n+=sc}
+      if(!hits[i]&&sc)hits[i]=[];
+    }
+  }
+  // 2) 全文命中
+  if(scope==='all'&&allTerms.length){
+    for(const w of allTerms){
+      const alts=expand(w);
+      const merged=new Map();
+      for(const a of alts){
+        if(a.length<1)continue;
+        const mul=(a===w)?1:0.5;      // 同义命中只算半权重，原词优先
+        const r=scanWord(a);
+        for(const [d,v] of r){
+          let e=merged.get(d);
+          if(!e)merged.set(d,e={n:0,p:[]});
+          e.n+=v.n*mul;
+          for(const p of v.p)if(e.p.length<6)e.p.push(p);
+        }
+        if(!g.must.includes(w))break; // 短语/可选词不必穷举同义
+      }
+      const df=merged.size||1;
+      const idf=Math.log(1+N/(1+df));
+      for(const [d,v] of merged){
+        if(!passFilter(d))continue;
+        const dd=DOCS[d];
+        const tf=Math.min(v.n,12);
+        let s=(0.6+0.4*tf/12)*idf*2.2;
+        if(v.n===1)s+=0.4;
+        scores[d]+=s;
+        perDoc[d]=perDoc[d]||{n:0};
+        perDoc[d].n+=v.n;
+        if(!hits[d])hits[d]=[];
+        for(const p of v.p)hits[d].push(p);
+      }
+      // 必含词：一个都没命中才淘汰，只命中一部分的降权保留（法律检索宁可多召回）
+      // 「项目」「范围」这类在法规里几乎篇篇都有的词不参与淘汰，只作加分——
+      // 否则「必须招标 项目 范围」会把全库 369 件都算成部分命中。
+      if(g.must.includes(w)&&merged.size<=N*0.6){
+        strict++;
+        for(const [d] of merged)if(scores[d]>0)mustHit[d]++;
+      }
+    }
+  }
+  // 3) 精确短语加成
+  for(const ph of g.phrase){
+    const r=scanWord(ph);
+    for(const [d,v] of r){if(scores[d]>0)scores[d]+=3.0+Math.min(v.n,5)*0.3}
+  }
+  // 4) 排除词
+  for(const w of g.not){
+    for(const a of expand(w)){
+      const r=scanWord(a);
+      for(const [d] of r)scores[d]=-1e9;
+      for(let i=0;i<N;i++){
+        if((DOCS[i].t+' '+DOCS[i].is+' '+DOCS[i].dn).includes(a))scores[i]=-1e9;
+      }
+    }
+  }
+  // 5) 条号直达：命中条号的文档大幅加分并记录目标单元
+  const artTarget=new Array(N).fill(-1);
+  if(art!==null){
+    for(let i=0;i<N;i++){
+      if(!passFilter(i>=0?DOCS[i]:null))continue;
+      const a=ARTS[i]; if(!a)continue;
+      if(a[art]!==undefined){artTarget[i]=a[art];scores[i]+=14}
+    }
+  }
+  // 6) 组装
+  const out=[];
+  for(let i=0;i<N;i++){
+    if(scores[i]<=-1e8)continue;
+    if(!passFilter(DOCS[i]))continue;
+    if(needTerms&&scores[i]<=0)continue;
+    if(scope==='title'&&allTerms.length&&scores[i]<1)continue;
+    if(strict&&mustHit[i]===0)continue;            // 一个严格必含词都没命中
+    const d=DOCS[i];
+    let s=scores[i];
+    if(strict&&mustHit[i]<strict)s*=0.3*(mustHit[i]/strict);   // 部分命中降权
+    s*=LVW[d.lv]||1;
+    if(F.region!=='全部'&&d.rg===F.region)s*=1.6;        // 属地优先
+    out.push({i,s,tf:(perDoc[i]&&perDoc[i].n)||0,h:hits[i]||[],art:artTarget[i]});
+  }
+  // 相关度排序：选了地区时，本法域的文件整段提到全国性文件之前
+  const rgRank=r=>F.region!=='全部'&&DOCS[r.i].rg===F.region?0:1;
+  if(sortBy==='rel')out.sort((a,b)=>rgRank(a)-rgRank(b)||b.s-a.s||b.tf-a.tf||a.i-b.i);
+  else if(sortBy==='level')out.sort((a,b)=>LEVELS.indexOf(DOCS[a.i].lv)-LEVELS.indexOf(DOCS[b.i].lv)||b.s-a.s);
+  else out.sort((a,b)=>(DOCS[b.i].pb||'').localeCompare(DOCS[a.i].pb||''));
+  RESULT=out;
+  if(cache.size>60)cache.clear();
+  cache.set(key,out);
+}
+function passFilter(d){
+  if(!d)return false;
+  if(F.level!=='全部'&&d.lv!==F.level)return false;
+  if(F.region!=='全部'&&!(d.rg===F.region||d.rg==='全国'))return false;
+  if(F.tag!=='全部'&&!d.tg.includes(F.tag))return false;
+  if(F.issuer!=='全部'&&d.is!==F.issuer)return false;
+  return true;
+}
+
+/* ---------- 片段 ---------- */
+function unitIdxOf(pos,di){
+  const d=DOCS[di];let lo=d.u0,hi=d.u1-1,r=d.u0;
+  while(lo<=hi){const m=(lo+hi)>>1;if(UNITS[m][0]<=pos){r=m;lo=m+1}else hi=m-1}
+  return r;
+}
+function unitText(ui){
+  const d=DOCS[docOfUnit(ui)];
+  const end=(ui+1<d.u1)?UNITS[ui+1][0]:d.e;
+  return BLOB.slice(UNITS[ui][0],Math.min(end,UNITS[ui][0]+420));
+}
+function docOfUnit(ui){
+  let lo=0,hi=N-1;
+  while(lo<hi){const m=(lo+hi+1)>>1;if(DOCS[m].u0<=ui)lo=m;else hi=m-1}
+  return lo;
+}
+function snippets(r,n){
+  const d=DOCS[r.i];
+  if(r.art>=0)return [{u:r.art,label:UNITS[r.art][2]}];
+  const seen=new Set(),out=[];
+  const firstArt=(()=>{for(let u=d.u0;u<d.u1;u++)if(UNITS[u][1]===1)return u;return d.u0})();
+  for(const p of r.h){
+    let ui=unitIdxOf(p,r.i);
+    // 命中落在文档标题行上（说明词只在篇名里出现）时，改用开头正文作摘要
+    if(ui===d.u0&&UNITS[ui][1]===2)ui=firstArt;
+    if(seen.has(ui))continue;seen.add(ui);
+    out.push({u:ui,label:UNITS[ui][2]});
+    if(out.length>=n)break;
+  }
+  return out;
+}
+function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function hl(s,terms){
+  let t=esc(s);
+  const ws=[];
+  for(const w of terms)for(const a of expand(w))if(a.length>=1)ws.push(a);
+  ws.sort((a,b)=>b.length-a.length);
+  for(const w of ws){
+    if(!w)continue;
+    const parts=t.split(w);
+    if(parts.length>1)t=parts.join('<mark>'+esc(w)+'</mark>');
+  }
+  return t;
+}
+
+/* ---------- 渲染 ---------- */
+function termList(){
+  const g=parseQuery(kw);return g.must.concat(g.phrase);
+}
+function renderList(){
+  const tl=termList();
+  const arr=RESULT;
+  // 选了地区时按属地分两段：本法域的在前，全国性在后。法律适用讲属地，
+  // 只靠打分加权不够直观——用户要能一眼看出「哪些是我们省自己的规定」。
+  let head='';
+  let show=arr.slice(0,SHOWN);
+  if(F.region!=='全部'){
+    const local=[],nat=[];
+    for(const r of arr)(DOCS[r.i].rg===F.region?local:nat).push(r);
+    const card=r=>`<div class="item" data-i="${r.i}">
+      <div class="t">${hl(DOCS[r.i].t,tl)}</div>
+      <div class="m"><span class="tag lv">${DOCS[r.i].lv}</span><span class="tag rg">${DOCS[r.i].rg}</span>
+      <span>${esc(DOCS[r.i].cat)}</span><span>${DOCS[r.i].pb||'—'}</span>${DOCS[r.i].es==='待施行'?`<span style="color:#e0b25a">待施行</span>`:''}${r.tf?`<span style="color:#e0b25a">命中${r.tf}处</span>`:''}</div>
+      ${snippets(r,3).map(s=>`<div class="snip" data-u="${s.u}"><b>${esc(s.label)}</b>${hl(unitText(s.u).replace(/\s+/g,' ').trim(),tl)}</div>`).join('')}</div>`;
+    const cut=(a)=>a.slice(0,Math.max(0,SHOWN-(a===local?0:local.length)));
+    head=(local.length?`<div class="sepg">${esc(F.region)}　${local.length} 件</div>`:'')
+        +cut(local).map(card).join('')
+        +(nat.length?`<div class="sepg">全国　${nat.length} 件</div>`:'')
+        +cut(nat).map(card).join('');
+    itemsEl.innerHTML=head||'<div class="empty">无匹配结果</div>';
+    bindItems();
+    document.getElementById('cnt').textContent='命中 '+arr.length+' / '+N+' 件';
+    renderSideCounts();
+    return;
+  }
+  itemsEl.innerHTML=show.length?show.map((r,ix)=>{
+    const d=DOCS[r.i];
+    const sn=snippets(r,3).map(s=>{
+      let txt=unitText(s.u).replace(/\s+/g,' ').trim();
+      return `<div class="snip" data-u="${s.u}"><b>${esc(s.label)}</b>${hl(txt,tl)}</div>`;
+    }).join('');
+    return `<div class="item" data-i="${r.i}" data-ix="${ix}">
+      <div class="t">${hl(d.t,tl)}</div>
+      <div class="m"><span class="tag lv">${d.lv}</span><span class="tag rg">${d.rg}</span>
+      <span>${esc(d.cat)}</span><span>${d.pb||'—'}</span>${d.es==='待施行'?`<span style="color:#e0b25a">待施行</span>`:''}${r.tf?`<span style="color:#e0b25a">命中${r.tf}处</span>`:''}</div>
+      ${sn}</div>`;
+  }).join(''):'<div class="empty">无匹配结果<br><span style="font-size:12px">试试更短的关键词，或清除左侧筛选</span></div>';
+  if(arr.length>SHOWN){
+    const more=document.createElement('div');
+    more.className='more';more.textContent='还有 '+(arr.length-SHOWN)+' 条，点击加载更多';
+    more.onclick=()=>{SHOWN+=120;renderList()};
+    itemsEl.appendChild(more);
+  }
+  bindItems();
+  document.getElementById('cnt').textContent='命中 '+arr.length+' / '+N+' 件';
+  renderSideCounts();
+}
+function bindItems(){
+  itemsEl.querySelectorAll('.item').forEach(el=>{
+    el.onclick=e=>{
+      const sn=e.target.closest('.snip');
+      if(sn){openDoc(+el.dataset.i,+sn.dataset.u)}
+      else openDoc(+el.dataset.i,-1);
+      itemsEl.querySelectorAll('.item').forEach(x=>x.classList.remove('on'));
+      el.classList.add('on');
+    };
+  });
+}
+function openDoc(di,jump){
+  curDoc=di;const d=DOCS[di];
+  const tl=termList();
+  let html=`<h2>${esc(d.t)}</h2>
+  <div class="docbar">
+    <button id="backBtn" onclick="document.body.classList.remove('mob-doc')">← 返回列表</button>
+    <span id="hitInfo"></span>
+    <span style="margin-left:auto">${esc(d.lv)} · ${esc(d.rg)}</span>
+  </div>
+  <div class="meta">
+    <div><b>编号</b>${esc(d.id||'—')}　<b>层级</b>${d.lv}　<b>分类</b>${esc(d.cat)}　<b>适用地区</b>${esc(d.rg)}</div>
+    <div><b>效力</b>${LVDESC[d.lv]||'—'}</div>
+    <div><b>制定机关</b>${esc(d.is||'—')}</div>
+    <div><b>文号</b>${esc(d.dn||'—')}</div>
+    <div><b>公布日期</b>${d.pb||'—'}　<b>施行日期</b>${d.ef||'—'}${d.es==='待施行'?'　<b style="color:#e0b25a">待施行</b>':''}　<b>状态</b>${esc(d.st||'—')}</div>
+    ${d.nt?`<div><b>沿革</b>${esc(d.nt)}</div>`:''}
+    ${d.tg.length?`<div><b>主题</b>${d.tg.map(esc).join(' / ')}</div>`:''}
+    ${d.src?`<div><b>官方来源</b><a href="${esc(d.src)}" target="_blank" rel="noopener">${esc((d.src.match(/^https?:\/\/([^\/]+)/)||[,''])[1]||'原文')}</a></div>`:''}
+    ${d.f?`<div><b>本地文件</b><a href="${encodeURI(d.f)}" target="_blank">${esc(d.f.split('/').pop())}</a></div>`:''}
+  </div><div class="body">`;
+  const end=d.e;
+  for(let ui=d.u0;ui<d.u1;ui++){
+    const u=UNITS[ui];
+    const stop=(ui+1<d.u1)?UNITS[ui+1][0]:end;
+    let raw=BLOB.slice(u[0],stop);
+    // 章/节单元去掉 Markdown 的 # 号，正文里没必要显示标记符
+    if(u[1]===2)raw=raw.replace(/^[ \t]*#{1,6}[ \t]*/gm,'');
+    const cls=u[1]===1?'u art':(u[1]===2?'u head':(u[1]===3?'u sec':'u'));
+    html+=`<div class="${cls}" id="u${ui}">${hl(raw,tl)}</div>`;
+  }
+  html+='</div>';
+  docEl.innerHTML=html;docEl.scrollTop=0;
+  document.body.classList.add('mob-doc');
+  if(window.innerWidth>900)document.body.classList.remove('mob-doc');
+  hitPos=[];
+  if(tl.length){
+    const marks=[...docEl.querySelectorAll('mark')];
+    hitPos=marks;
+    document.getElementById('hitInfo').textContent=marks.length?('本文命中 '+marks.length+' 处'):'';
+  }
+  if(jump>=0){const el=docEl.querySelector('#u'+jump);if(el){el.scrollIntoView({block:'center'});el.classList.add('flash');
+    setTimeout(()=>el.classList.remove('flash'),1600);
+    const m=el.querySelector('mark');if(m)m.classList.add('cur');}}
+}
+function navHit(dir){
+  if(!hitPos.length)return;
+  const dr=docEl.getBoundingClientRect();
+  let best=null,bd=1e9;
+  for(const m of hitPos){
+    const t=m.getBoundingClientRect().top-dr.top-40;
+    if(dir>0&&t<10)continue;
+    if(dir<0&&t>-10)continue;
+    if(Math.abs(t)<Math.abs(bd)){bd=t;best=m}
+  }
+  if(best){best.scrollIntoView({block:'center'});
+    hitPos.forEach(m=>m.classList.remove('cur'));best.classList.add('cur');}
+}
+
+/* ---------- 侧栏 ---------- */
+const sideEl=document.getElementById('side');
+const itemsEl=document.getElementById('items');
+const docEl=document.getElementById('doc');
+function countsFor(field){
+  const c={};
+  for(let i=0;i<N;i++){
+    const d=DOCS[i];
+    // 统计该维度自身选中时的命中数（其余维度保持当前选择）
+    const bak=F[field];F[field]='全部';
+    const ok=passFilter(d);
+    F[field]=bak;
+    if(!ok)continue;
+    if(field==='tag'){for(const v of d.tg)c[v]=(c[v]||0)+1;continue}
+    const v=d[({level:'lv',region:'rg',issuer:'is'})[field]];
+    if(!v)continue;
+    c[v]=(c[v]||0)+1;
+  }
+  return c;
+}
+function grpBtn(v,n,kind,on){
+  return `<button class="f${on?' on':''}${n?'':' zero'}" data-kind="${kind}" data-v="${esc(v)}">${esc(v.length>15?v.slice(0,15)+'…':v)}<span class="n">${n||0}</span></button>`;
+}
+let openGrp={level:1,region:1,tag:1,issuer:0};
+let regionFilter='',issuerFilter='';
+function renderSide(){
+  const cl=countsFor('level'),cr=countsFor('region'),ct=countsFor('tag'),ci=countsFor('issuer');
+  let h='';
+  h+=`<h3 data-g="level"><span class="caret">${openGrp.level?'▾':'▸'}</span>效力层级</h3><div class="grp${openGrp.level?'':' hide'}">`;
+  h+=grpBtn('全部',N,'level',F.level==='全部');
+  LEVELS.forEach(l=>{if(cl[l])h+=grpBtn(l,cl[l],'level',F.level===l)});
+  h+='</div>';
+  // 地区
+  h+=`<h3 data-g="region"><span class="caret">${openGrp.region?'▾':'▸'}</span>适用地区</h3><div class="grp${openGrp.region?'':' hide'}">`;
+  h+=grpBtn('全部',N,'region',F.region==='全部');
+  const prov=[],city=[];
+  Object.keys(cr).filter(k=>k!=='全国').forEach(k=>{
+    (DOCS.find(d=>d.rg===k)||{rl:'市级'}).rl==='省级'?prov.push(k):city.push(k);
+  });
+  prov.sort((a,b)=>(cr[b]||0)-(cr[a]||0));city.sort((a,b)=>(cr[b]||0)-(cr[a]||0));
+  const vis=k=>!regionFilter||k.includes(regionFilter);
+  h+=`<div style="font-size:11px;color:var(--tx3);margin:6px 0 3px">省级 / 直辖市 / 自治区（含全国法）</div><div class="scrollbox">`;
+  prov.filter(vis).forEach(k=>h+=grpBtn(k,cr[k],'region',F.region===k));
+  h+=`</div><div style="font-size:11px;color:var(--tx3);margin:8px 0 3px">设区的市 / 自治州</div>`;
+  h+=`<input class="subf" id="rf" placeholder="筛选地区…" value="${esc(regionFilter)}"><div class="scrollbox">`;
+  city.filter(vis).forEach(k=>h+=grpBtn(k,cr[k],'region',F.region===k));
+  h+='</div></div>';
+  // 主题
+  h+=`<h3 data-g="tag"><span class="caret">${openGrp.tag?'▾':'▸'}</span>主题标签</h3><div class="grp${openGrp.tag?'':' hide'}">`;
+  h+=grpBtn('全部',N,'tag',F.tag==='全部');
+  Object.keys(ct).sort((a,b)=>ct[b]-ct[a]).forEach(k=>h+=grpBtn(k,ct[k],'tag',F.tag===k));
+  h+='</div>';
+  // 机关
+  h+=`<h3 data-g="issuer"><span class="caret">${openGrp.issuer?'▾':'▸'}</span>制定机关（${Object.keys(ci).length}）</h3><div class="grp${openGrp.issuer?'':' hide'}">`;
+  h+=grpBtn('全部',N,'issuer',F.issuer==='全部');
+  h+=`<input class="subf" id="if" placeholder="筛选机关…" value="${esc(issuerFilter)}"><div class="scrollbox">`;
+  Object.keys(ci).sort((a,b)=>ci[b]-ci[a]).filter(k=>!issuerFilter||k.includes(issuerFilter))
+    .forEach(k=>h+=grpBtn(k,ci[k],'issuer',F.issuer===k));
+  h+='</div></div>';
+  h+=`<h3 style="cursor:default"><span class="caret"></span>　</h3>
+  <button class="f" id="reset" style="border-color:#3a2a2a;color:#e0a0a0">清除全部筛选与搜索</button>`;
+  sideEl.innerHTML=h;
+  sideEl.querySelectorAll('.f[data-kind]').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.kind,v=b.dataset.v;
+    F[k]=F[k]===v&&k!=='level'?'全部':v;
+    if(k==='level')F.level=v;
+    SHOWN=80;run();
+  });
+  sideEl.querySelectorAll('h3[data-g]').forEach(x=>x.onclick=()=>{
+    const g=x.dataset.g;openGrp[g]=!openGrp[g];renderSide();
+  });
+  const rf=document.getElementById('rf');
+  if(rf)rf.oninput=e=>{regionFilter=e.target.value.trim();renderSide();
+    const n=document.getElementById('rf');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}};
+  const inf=document.getElementById('if');
+  if(inf)inf.oninput=e=>{issuerFilter=e.target.value.trim();renderSide();
+    const n=document.getElementById('if');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}};
+  const rs=document.getElementById('reset');
+  if(rs)rs.onclick=()=>{F.level=F.region=F.tag=F.issuer='全部';kw='';
+    document.getElementById('q').value='';SHOWN=80;run()};
+}
+function renderSideCounts(){
+  // 搜索后刷新各筛选按钮上的数字
+  const cl=countsFor('level'),cr=countsFor('region'),ct=countsFor('tag'),ci=countsFor('issuer');
+  sideEl.querySelectorAll('.f[data-kind]').forEach(b=>{
+    const k=b.dataset.kind,v=b.dataset.v;
+    let n=0;
+    if(v==='全部')n=N;
+    else if(k==='level')n=cl[v]||0;
+    else if(k==='region')n=cr[v]||0;
+    else if(k==='tag')n=ct[v]||0;
+    else n=ci[v]||0;
+    const sp=b.querySelector('.n');if(sp)sp.textContent=n||0;
+    b.classList.toggle('zero',!n);
+  });
+}
+
+/* ---------- 驱动 ---------- */
+let timer=null;
+function run(){
+  doSearch();
+  SHOWN=Math.max(SHOWN,80);
+  renderList();
+}
+const qEl=document.getElementById('q');
+qEl.oninput=e=>{
+  kw=e.target.value.trim();SHOWN=80;
+  clearTimeout(timer);
+  timer=setTimeout(run,90);          // 防抖：连打时不重复扫全文
+};
+document.getElementById('scope').onclick=e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  scope=e.target.dataset.v;
+  [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target));
+  SHOWN=80;run();
+};
+document.getElementById('sort').onclick=e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  sortBy=e.target.dataset.v;
+  [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target));
+  run();
+};
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){qEl.value='';kw='';SHOWN=80;run();qEl.focus();return}
+  if(e.target.tagName==='INPUT')return;
+  const els=[...itemsEl.querySelectorAll('.item')];
+  if(!els.length)return;
+  let i=els.findIndex(x=>x.classList.contains('on'));
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    i=e.key==='ArrowDown'?Math.min(els.length-1,i+1):Math.max(0,i<0?0:i-1);
+    els[i].click();els[i].scrollIntoView({block:'nearest'});
+  }
+});
+docEl.addEventListener('keydown',()=>{});
+document.addEventListener('keydown',e=>{
+  if((e.key==='n'||e.key==='N')&&!e.metaKey&&!e.ctrlKey&&e.target.tagName!=='INPUT')navHit(1);
+  if((e.key==='p'||e.key==='P')&&!e.metaKey&&!e.ctrlKey&&e.target.tagName!=='INPUT')navHit(-1);
+});
+itemsEl.addEventListener('scroll',()=>{
+  if(SHOWN<RESULT.length&&itemsEl.scrollTop+itemsEl.clientHeight>itemsEl.scrollHeight-200){
+    SHOWN+=120;renderList();
+  }
+});
+renderSide();
+// 支持 #q=关键词&d=序号 直接定位，便于把检索结果分享给别人
+(function(){
+  const h=location.hash||'';
+  const m=h.match(/q=([^&]*)/);
+  if(m){let s=m[1];try{s=decodeURIComponent(s)}catch(e){}
+    qEl.value=s;kw=s.trim()}
+  const dm=h.match(/[?&]d=(\d+)/);
+  run();
+  if(dm&&+dm[1]<N)openDoc(+dm[1],-1);
+})();
+</script>
+</body>
+</html>

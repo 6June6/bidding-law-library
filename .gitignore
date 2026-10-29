@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+._*
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 抓取过程的临时产物（可重新生成，不入库）
+data/*.log
+data/items.bak-*.json
+data/cache_flk.json
+data/flk_raw.json
+data/gz_mohurd_*.json
+data/list_ndrc_ling.json
+data/ccgp_raw.json
+data/quarantine/
+*.tmp
+
+# 生成物（由 tools/build_index.py + tools/render.py 重建；
+# index.html 是面向使用者的成品，特意入库，故不在此列）
+data/search-index.tmp.json
+
+# Python
+__pycache__/
+*.pyc
