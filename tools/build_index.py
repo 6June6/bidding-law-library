@@ -95,6 +95,7 @@ SYNONYMS = [
     ["评标委员会", "评标小组", "评审小组", "评标专家库"],
     ["投标保证金", "投标担保"],
     ["履约保证金", "履约担保", "履约保函"],
+    ["上限", "最高限额", "最高限价"],
     ["串通投标", "串标", "围标", "陪标"],
     ["转包", "违法分包", "挂靠", "资质借用"],
     ["工程总承包", "EPC", "设计施工总承包"],
@@ -197,6 +198,11 @@ def build():
     p = os.path.join(DATA, "search-index.json")
     with open(p, "w", encoding="utf-8") as f:
         json.dump(idx, f, ensure_ascii=False, separators=(",", ":"))
+    # 全文 blob 单独落盘：MCP 服务（tools/mcp_server.py）要按同一套偏移取原文，
+    # 但不应去解析 7MB 的 index.html。构造方式必须与 render.write_html 完全一致。
+    ft = os.path.join(DATA, "fulltext.txt")
+    with open(ft, "w", encoding="utf-8") as f:
+        f.write("\n".join(blob_parts))
     return idx, p
 
 

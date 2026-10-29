@@ -53,7 +53,10 @@ if __name__ == "__main__":
     run("tools/fix_meta.py", "--apply")
     # 8) 派生检索维度：机关归一、适用地区、别名、主题标签
     run("tools/normalize_meta.py", "--apply")
-    # 9) 检索索引（单元切分 + 条号直达），再重建三件套
+    # 9) 修硬折行（「每 20 字断一行」会让「公平竞争」永远搜不到）
+    #    硬约束：去掉空白后字符串必须完全不变，只移动空白
+    run("tools/fix_wrap.py", "--apply")
+    # 10) 检索索引（单元切分 + 条号直达 + 全文 blob），再重建三件套
     run("tools/build_index.py")
     run("tools/render.py")
     print("\n完成。检索自检：node tools/test_search.js")

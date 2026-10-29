@@ -29,6 +29,8 @@ open index.html          # macOS；Linux 用 xdg-open，Windows 直接双击
 | 我想要 | 用什么 |
 | --- | --- |
 | 全文检索、条文定位、按地区/层级/机关筛选 | `index.html`（浏览器打开） |
+| 手机/他人也能搜，不装任何东西 | [在线版](https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ) |
+| 让 AI（Claude / Cursor / WorkBuddy）直接查这个库 | `tools/mcp_server.py`（[MCP 服务](#11-接入-ai用-mcp-让模型直接查库)） |
 | 在 Excel 里排序、筛选、做清单 | `catalog.csv` |
 | 按层级/地区/机关浏览目录 | `INDEX.md` |
 | 让 AI / 笔记软件读的纯文本 | `0*/*.md`（414 篇，带 YAML 元数据） |
@@ -316,4 +318,95 @@ node tools/test_search.js                  # 检索回归测试（25 项断言�
 - 只收**官方法定文本**，标题必须与官方标题一致，不改写、不节选
 - 正文只留法规本身——页脚、友情链接、责任编辑、导航栏一律清掉
 - 条文行（`第X条`）与章节行（`第X章/节`）是索引的切分依据，任何清洗规则都不许删它们
+
+## 11. 接入 AI：用 MCP 让模型直接查库
+
+**为什么不是直接把 414 篇扔给模型**：222 万字约合 150 万 token，超出绝大多数模型的上下文，
+也不可能每次对话都全量塞进去。正确做法是让模型**先检索、再取证**——`tools/mcp_server.py`
+把本库包成 MCP 服务，模型自己调工具取回命中的那几条条文，读到的是原文而不是记忆。
+
+```
+模型 ──search_law("投标保证金 上限")──▶ MCP 服务 ──▶ data/search-index.json + fulltext.txt
+     ◀──《招标投标法实施条例》第二十六条 原文 ─────┘        （2.2MB 全文始终不进上下文）
+```
+
+### 四个工具
+
+| 工具 | 作用 | 典型调用 |
+| --- | --- | --- |
+| `search_law` | 关键词检索，返回条级命中（法规名 + 条号 + 条文原文 + 层级/地区/日期） | `query="串通投标 认定"`、`region="安徽"`、`level="行政法规"` |
+| `get_article` | 精确取某篇第 X 条，条号汉字/数字均可 | `doc="招标投标法实施条例", article="26"` |
+| `get_document` | 取整篇正文（分页，默认 5000 字） | `doc="A01"`、`offset=5000` |
+| `list_documents` | 按层级/地区/年份/关键词列条目，用于"库里有没有" | `level="法律"`、`year="2024"` |
+
+检索在本地完成，只把命中的条文交给模型；每条结果都带**《法规名》第X条**的出处，
+模型引用时可核对，也便于你在原文里复查。
+
+### 配置（以 WorkBuddy / Claude Desktop 为例）
+
+```json
+{
+  "mcpServers": {
+    "legal-library": {
+      "command": "python3",
+      "args": ["/绝对路径/legal-library/tools/mcp_server.py"]
+    }
+  }
+}
+```
+
+- WorkBuddy：写入 `~/.workbuddy/mcp.json`，然后在连接器页面点「信任」启用
+- Claude Desktop：写入 `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Cursor：`~/.cursor/mcp.json`，配置格式相同
+
+只依赖 Python 3.10+ 标准库，无需 pip 安装。首次使用前先跑一次
+`python3 tools/build_index.py`（生成 `data/search-index.json` 与 `data/fulltext.txt`）。
+
+### 可以这样问
+
+- 「投标保证金最多能收多少？给出条文依据」→ 模型会检索并引《实施条例》第二十六条
+- 「我们公司在合肥，围标怎么认定，安徽有没有更细的规定？」→ 带 `region=安徽` 检索，本地＋全国两份
+- 「必须招标的项目范围是怎么规定的」→ 定位到《必须招标的工程项目规定》与范围规定
+- 「帮我核对：招标文件发售期不得少于 5 日，对吗？」→ 取条文原文比对，而不是凭记忆点头
+
+## 12. 在线部署
+
+**开箱即用的在线版**：<https://bidding-law-search.app.workbuddy.host/?sharecode=5SVZL2T4BZ>
+（单页应用，手机浏览器直接可用，无需安装）
+
+**部署到自己的服务器**同样是拷一个文件的事——`index.html` 是自包含的，不依赖任何后端：
+
+```nginx
+# 把 index.html 放到 /srv/law/，然后加一段 location
+location /law/ {
+    alias /srv/law/;
+    index index.html;
+    gzip on;
+    gzip_types text/html;
+    gzip_min_length 1k;      # 7.4MB → 约 1.3MB，手机上也快
+}
+```
+
+```bash
+scp index.html root@你的服务器:/srv/law/
+nginx -t && systemctl reload nginx
+# 访问 http://你的服务器IP/law/
+```
+
+放在子路径而不是根路径，不会影响同一台机器上的其他站点。若走 https，`gzip` 与
+`Cache-Control: max-age=86400` 都建议加在 location 里——文件内容随数据更新变化，
+不宜设 immutable。
+
+## 13. 数据质量守则（踩过的坑）
+
+1. **硬折行会毁掉检索**：docx 转换常保留「每 20 字断一行」，`维护公平竞\n\n争` 会让
+   「公平竞争」永远搜不到。`tools/fix_wrap.py` 专门修这个，判据是「该文件里有词只有
+   去掉换行才找得到」；修完必须满足**去掉所有空白后字符串完全不变**——只许移动空白，
+   不许增删改字。表格/编码清单类文件整篇跳过，合并会破坏表结构。
+2. **片段要取最相关的那一条**，不是"第一条命中的条"。搜「串通投标 认定」时正文里先
+   出现的是「招标代理机构资格……认定」，按首次命中摘出来就是完全无关的第十一条。
+3. **同义词不能倒挂**：把「保证金」当成「投标保证金」的等价词，会让《质量保证金管理
+   办法》顶掉真正的答案。同义词只在原词没命中时给半权重。
+4. **同条共现是强信号**：「投标保证金」和「不得超过」落在同一条里，比两个词分散在两
+   个章节相关得多，值得单独加权。
 
